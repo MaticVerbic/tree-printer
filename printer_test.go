@@ -32,9 +32,13 @@ func TestParse(t *testing.T) {
 
 	p := printer.New(tr, buf)
 
-	p.Parse()
+	err := p.Parse()
+	if err != nil {
+		t.Error(err)
+	}
 
 	if diff := diff.Diff(s, buf.String()); diff != "" {
+		fmt.Println(buf.String())
 		fmt.Println(diff)
 		t.Fail()
 	}

@@ -4,16 +4,19 @@ import (
 	"printer"
 )
 
+// Tree ...
 type Tree struct {
 	root *Node
 }
 
+// Node ...
 type Node struct {
 	children []*Node
 	data     string
 	index    string
 }
 
+// New returns a new Tree.
 func New(data, index string) *Tree {
 	return &Tree{
 		root: &Node{
@@ -23,6 +26,7 @@ func New(data, index string) *Tree {
 	}
 }
 
+// Insert a new Node into the tree.
 func (t *Tree) Insert(data, newIndex, atIndex string) {
 	t.insert(data, newIndex, atIndex, t.root)
 }
@@ -57,6 +61,7 @@ func (t *Tree) insert(data, newIndex, atIndex string, n *Node) {
 
 /* Satisfy printer interfaces */
 
+// Children returns all children of Node n.
 func (n *Node) Children() []printer.Node {
 	if n.children == nil {
 		return nil
@@ -70,10 +75,12 @@ func (n *Node) Children() []printer.Node {
 	return nodes
 }
 
+// Data returns data from Node.
 func (n *Node) Data() interface{} {
 	return n.data
 }
 
+// RootNode returns root Node satisfying printer interface.
 func (t *Tree) RootNode() printer.Node {
 	if t.root == nil {
 		return nil

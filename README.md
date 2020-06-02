@@ -18,7 +18,10 @@ buf := bytes.NewBuffer([]byte{})
 
 p := printer.New(tr, buf)
 
-p.Parse()
+err := p.Parse()
+if err != nil {
+    panic(err)
+}
 fmt.Println(buf) 
 ```
 ```  
@@ -33,12 +36,12 @@ root
 
 ### Documentation
 
-```
+```go
 // Parse the three into a provided buffer.
-func (p *Printer) Parse() 
+func (p *Printer) Parse() error
 
 // Print the provided tree. If buffer other than os.Stdout
 // is provided to printer, then replace buf with os.Stdout
 // while printing.
-func (p *Printer) Print() 
+func (p *Printer) Print() error
 ```

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"io"
 	"os"
+
+	"github.com/pkg/errors"
 )
 
 // Node defines behavior of nodes.
@@ -38,42 +40,53 @@ func New(t Tree, buf io.Writer) *Printer {
 }
 
 // Parse the three into a provided buffer.
-func (p *Printer) Parse() {
-	p.print(p.t.RootNode(), "", true, 0)
+func (p *Printer) Parse() error {
+	return p.print(p.t.RootNode(), "", true, 0)
 }
 
 // Print the provided tree. If buffer other than os.Stdout
 // is provided to printer, then replace buf with os.Stdout
 // while printing.
-func (p *Printer) Print() {
+func (p *Printer) Print() error {
 	if p.buf == os.Stdout {
-		p.print(p.t.RootNode(), "", true, 0)
-		return
+		return p.print(p.t.RootNode(), "", true, 0)
 	}
 
 	temp := p.buf
 	p.buf = os.Stdout
 
-	p.print(p.t.RootNode(), "", true, 0)
+	err := p.print(p.t.RootNode(), "", true, 0)
 
 	p.buf = temp
+
+	return err
 }
 
 // Unexported worker method.
-func (p *Printer) print(n Node, prefix string, isLast bool, height int) {
+func (p *Printer) print(n Node, prefix string, isLast bool, height int) error {
 	if height > 0 {
-		p.buf.Write([]byte(prefix))
+		if _, err := p.buf.Write([]byte(prefix)); err != nil {
+			return errors.Wrap(err, "failed to parse prefix")
+		}
 		if isLast {
-			p.buf.Write([]byte("└─ "))
+			if _, err := p.buf.Write([]byte("└─ ")); err != nil {
+				return errors.Wrap(err, "failed to parse last child")
+			}
 			prefix += "   "
 		} else {
-			p.buf.Write([]byte("├─ "))
+			if _, err := p.buf.Write([]byte("├─ ")); err != nil {
+				return errors.Wrap(err, "failed to parse child")
+			}
 			prefix += "|   "
 		}
 	}
-	p.buf.Write([]byte(fmt.Sprintf("%v\n", n.Data())))
+	if _, err := p.buf.Write([]byte(fmt.Sprintf("%v\n", n.Data()))); err != nil {
+		return errors.Wrap(err, "failed to parse data")
+	}
 
 	for i, child := range n.Children() {
 		p.print(child, prefix, i == len(n.Children())-1, height+1)
 	}
+
+	return nil
 }
