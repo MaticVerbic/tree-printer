@@ -4,22 +4,22 @@ Simple functionality for printing trees.
 
 ## Example: 
 ```go
-    tr := tree.New("root", "root")
-	tr.Insert("two", "two", "root")
-	tr.Insert("three", "three", "root")
-	tr.Insert("four", "four", "two")
-	tr.Insert("five", "five", "two")
-	tr.Insert("six", "six", "four")
-	tr.Insert("seven", "seven", "three")
+tr := tree.New("root", "root")
+tr.Insert("two", "two", "root")
+tr.Insert("three", "three", "root")
+tr.Insert("four", "four", "two")
+tr.Insert("five", "five", "two")
+tr.Insert("six", "six", "four")
+tr.Insert("seven", "seven", "three")
 
-	
 
-	buf := bytes.NewBuffer([]byte{})
 
-	p := printer.New(tr, buf)
+buf := bytes.NewBuffer([]byte{})
 
-    p.Parse()
-    fmt.Println(buf) 
+p := printer.New(tr, buf)
+
+p.Parse()
+fmt.Println(buf) 
 ```
 ```  
 root
