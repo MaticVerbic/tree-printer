@@ -1,5 +1,5 @@
 # Tree-printer
-
+![test](https://github.com/MaticVerbic/tree-printer/workflows/test/badge.svg?branch=master)
 Simple functionality for printing trees. 
 
 ## Example: 
