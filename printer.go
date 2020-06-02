@@ -85,7 +85,10 @@ func (p *Printer) print(n Node, prefix string, isLast bool, height int) error {
 	}
 
 	for i, child := range n.Children() {
-		p.print(child, prefix, i == len(n.Children())-1, height+1)
+		if err := p.print(child, prefix, i == len(n.Children())-1, height+1); err != nil {
+			return errors.Wrap(err, "failed to parse child")
+		}
+
 	}
 
 	return nil
