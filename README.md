@@ -12,8 +12,6 @@ tr.Insert("five", "five", "two")
 tr.Insert("six", "six", "four")
 tr.Insert("seven", "seven", "three")
 
-
-
 buf := bytes.NewBuffer([]byte{})
 
 p := printer.New(tr, buf)
@@ -24,6 +22,7 @@ if err != nil {
 }
 fmt.Println(buf) 
 ```
+output: 
 ```  
 root
 ├─ two
